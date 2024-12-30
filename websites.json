@@ -1,6 +1,6 @@
 [
   {
-    "url": "https://psc.ky.gov/home/viewcasefilings",
+    "url": "https://abc.com/home/view",
     "docket_selector": ".docket-number::text",
     "document_link_selector": "a::attr(href)"
   },
