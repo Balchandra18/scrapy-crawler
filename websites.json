@@ -10,3 +10,27 @@
     "document_link_selector": "a.doc-link::attr(href)"
   }
 ]
+
+
+
+BOT_NAME = 'scapy_scraper'
+
+SPIDER_MODULES = ['scpy_scraper.spiders']
+NEWSPIDER_MODULE = 'scpy_scraper.spiders'
+
+# Azure Blob Storage Settings
+AZURE_BLOB_CONNECTION_STRING = 'your_azure_blob_connection_string'
+FILTERED_CONTAINER = 'filtered-data'
+QUARANTINE_CONTAINER = 'quarantine-data'
+
+# Pipeline
+ITEM_PIPELINES = {
+    'kypsc_scraper.pipelines.AzureDefenderPipeline': 300,
+}
+
+# User Agent
+USER_AGENT = 'kypsc_scraper (+http://www.example.com)'
+
+# Crawl responsibly
+ROBOTSTXT_OBEY = True
+
