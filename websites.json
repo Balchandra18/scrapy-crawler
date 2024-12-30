@@ -1,0 +1,12 @@
+[
+  {
+    "url": "https://psc.ky.gov/home/viewcasefilings",
+    "docket_selector": ".docket-number::text",
+    "document_link_selector": "a::attr(href)"
+  },
+  {
+    "url": "https://example.com/dockets",
+    "docket_selector": ".docket-id::text",
+    "document_link_selector": "a.doc-link::attr(href)"
+  }
+]
