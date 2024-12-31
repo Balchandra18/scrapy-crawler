@@ -20,3 +20,12 @@ Centralize Results:
 
 Use Azure Blob Storage to store the crawled results.
 Process bad data in a quarantine container.
+
+
+Detailed Implementation
+1. Scrapy Spider Setup
+Create individual spiders or a parameterized spider for different websites. For instance:
+
+multi_filings.py:
+A single spider can take website-specific arguments via environment variables or configuration.
+Example: multi_filings.py with dynamic input:
