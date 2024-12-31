@@ -29,3 +29,23 @@ Create individual spiders or a parameterized spider for different websites. For 
 multi_filings.py:
 A single spider can take website-specific arguments via environment variables or configuration.
 Example: multi_filings.py with dynamic input:
+
+
+
+Build the Docker image:
+
+bash
+Copy code
+docker build -t scrapy-crawler .
+3. Deploy to AKS
+Create an AKS Cluster:
+
+Use Azure CLI:
+bash
+Copy code
+az aks create --resource-group myResourceGroup --name myAKSCluster --node-count 3 --enable-addons monitoring --generate-ssh-keys
+Push Docker Image to Azure Container Registry (ACR):
+
+bash
+Copy code
+az acr build --registry myRegistry --image scrapy-crawler .
