@@ -1,0 +1,19 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: scrapy-crawler-job
+spec:
+  template:
+    spec:
+      containers:
+      - name: scrapy-crawler
+        image: myRegistry.azurecr.io/scrapy-crawler:latest
+        env:
+        - name: TARGET_URL
+          value: "https://psc.ky.gov/home/viewcasefilings"
+        - name: DOCKET_SELECTOR
+          value: ".docket-number::text"
+        - name: DOCUMENT_LINK_SELECTOR
+          value: "a::attr(href)"
+      restartPolicy: Never
+  backoffLimit: 4
