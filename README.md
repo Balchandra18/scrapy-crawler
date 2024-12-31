@@ -1,6 +1,22 @@
 # scrapy-crawler
 
 
+scrapy-aks-crawler/
+├── Dockerfile
+├── requirements.txt
+├── scrapy_aks_crawler/
+│   ├── __init__.py
+│   ├── pipelines.py
+│   ├── settings.py
+│   ├── spiders/
+│       ├── __init__.py
+│       ├── multi_filings.py
+└── websites.json
+
+
+
+
+
 Steps to Implement an AKS-Based Batch Crawling System
 Containerize Each Spider:
 
