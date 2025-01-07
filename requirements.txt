@@ -4,3 +4,12 @@ requests
 beautifulsoup4
 azure-storage-blob
 python-dotenv
+
+
+
+fastapi==0.100.0
+uvicorn==0.23.2
+requests==2.31.0
+beautifulsoup4==4.12.2
+azure-storage-blob==12.16.0
+python-dotenv==1.0.0
