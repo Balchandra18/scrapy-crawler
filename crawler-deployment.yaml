@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: crawler-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: crawler-api
+  template:
+    metadata:
+      labels:
+        app: crawler-api
+    spec:
+      containers:
+      - name: crawler-api
+        image: <your_dockerhub_repo>/crawler-api:latest
+        ports:
+        - containerPort: 8000
+        env:
+        - name: AZURE_CONNECTION_STRING
+          valueFrom:
+            secretKeyRef:
+              name: azure-secrets
+              key: azure_connection_string
+        - name: CONTAINER_NAME
+          valueFrom:
+            secretKeyRef:
+              name: azure-secrets
+              key: container_name
