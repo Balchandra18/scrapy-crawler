@@ -1,0 +1,20 @@
+from promptflow import Flow, Node
+from promptflow.nodes import HttpRequest
+
+@Node()
+def trigger_scrape(urls):
+    # This node calls the FastAPI /scrape endpoint
+    response = HttpRequest(
+        method="POST",
+        url="http://your_fastapi_service/scrape",
+        body={"urls": urls}
+    )
+    return response
+
+
+
+flow = Flow("ScrapeFlow") \
+    .add_node(trigger_scrape)
+
+flow.run({"urls": ["http://example.com/documents"]})
+
