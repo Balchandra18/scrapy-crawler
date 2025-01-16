@@ -14,7 +14,7 @@ from azure.keyvault.secrets import SecretClient
 app = FastAPI()
 
 # Azure Key Vault setup
-VAULT_URL = "<AZURE_KEYVAULT_URL>"  # Replace with your Azure Key Vault URL
+VAULT_URL = os.getenv("AZURE_KEYVAULT_URL")
 credential = DefaultAzureCredential()
 secret_client = SecretClient(vault_url=VAULT_URL, credential=credential)
 
@@ -77,12 +77,10 @@ def scrape(request: ScrapeRequest):
 scheduler = BackgroundScheduler()
 
 def scheduled_scraping_job():
-    # Define the URLs to scrape
     urls = ["<URL_1>", "<URL_2>"]  # Replace with your target URLs
     for url in urls:
         scrape_case_documents(url)
 
-# Add a daily schedule (e.g., run at 12:00 AM daily)
 scheduler.add_job(scheduled_scraping_job, CronTrigger(hour=0, minute=0))
 scheduler.start()
 
