@@ -1,26 +1,31 @@
+# scheduler.py
 from apscheduler.schedulers.background import BackgroundScheduler
-from crawler.case_scraper import scrape_case_documents
-from crawler.docket_scraper import scrape_docket_documents
+from fastapi import FastAPI
+from fastapi.responses import JSONResponse
+import schedule
+import time
 
-def scheduled_task():
-    # Add your URLs here
-    case_urls = ["<CASE_URL_1>", "<CASE_URL_2>"]
-    docket_urls = ["<DOCKET_URL_1>", "<DOCKET_URL_2>"]
+def run_scrapers():
+    # Example: Replace with calls to API endpoints
+    import requests
+    urls_ky = ["http://127.0.0.1:8000/kyscrape", {"urls": ["<KY URLs>"]}]
+    requests.post(*urls_ky)
 
-    for url in case_urls:
-        scrape_case_documents(url)
-    
-    for url in docket_urls:
-        scrape_docket_documents(url)
+    urls_pa = ["http://127.0.0.1:8000/pascrape", {"urls": ["<PA URLs>"]}]
+    requests.post(*urls_pa)
 
-if __name__ == "__main__":
-    scheduler = BackgroundScheduler()
-    scheduler.add_job(scheduled_task, "interval", days=1)
-    scheduler.start()
-    
-    try:
-        # Keep the script running
-        while True:
-            pass
-    except (KeyboardInterrupt, SystemExit):
-        scheduler.shutdown()
+    urls_ri = ["http://127.0.0.1:8000/riscrape", {"urls": ["<RI URLs>"]}]
+    requests.post(*urls_ri)
+
+scheduler = BackgroundScheduler()
+scheduler.add_job(run_scrapers, 'interval', hours=24)
+scheduler.start()
+
+app = FastAPI()
+
+@app.get("/health")
+def health_check():
+    return JSONResponse(content={"status": "running"})
+
+while True:
+    time.sleep(1)
