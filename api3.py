@@ -36,7 +36,7 @@ def download_and_upload_document(document_url, folder_name, document_name):
         blob_client.upload_blob(response.content, overwrite=True)
         print(f"Uploaded {document_name} to folder {folder_name} in Azure Blob Storage.")
     except Exception as e:
-        raise Exception(f"Failed to process {document_url}: {e}")
+        print(f"Failed to process {document_url}: {e}")
 
 def scrape_documents(url):
     """Scrape the webpage for document links and upload them."""
@@ -67,18 +67,20 @@ def scrape_documents(url):
             download_and_upload_document(full_document_url, folder_name, document_name)
             results["documents"].append({"name": document_name, "url": full_document_url})
     except Exception as e:
+        print(f"Error while scraping {url}: {e}")
         raise HTTPException(status_code=500, detail=f"Error while scraping {url}: {e}")
 
     return results
 
 @app.post("/scrape")
 async def scrape_endpoint(request: ScrapeRequest):
-    """API endpoint to scrape documents."""
+    """API endpoint to scrape documents from a list of URLs."""
     results = []
     for url in request.urls:
         try:
+            print(f"Processing URL: {url}")
             result = scrape_documents(url)
             results.append(result)
         except Exception as e:
             results.append({"url": url, "error": str(e)})
-    return results
+    return {"results": results}
