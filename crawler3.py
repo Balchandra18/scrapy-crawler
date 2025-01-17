@@ -34,13 +34,12 @@ def download_and_upload_document(document_url, folder_name, document_name):
 def scrape_documents(url):
     """Scrape the webpage for document links and upload them."""
     docket_number = get_docket_number_from_url(url)
-    print(f"Processing docket: {docket_number}")
+    results = {"url": url, "docket_number": docket_number, "documents": []}
 
     try:
         # Ensure the folder exists in the Azure container
         folder_name = docket_number
         container_client.get_blob_client(blob=f"{folder_name}/").upload_blob(b"", overwrite=True)
-        print(f"Created folder {folder_name} in Azure Blob Storage.")
 
         # Fetch the webpage content
         response = requests.get(url)
@@ -59,12 +58,23 @@ def scrape_documents(url):
 
             # Download and upload each document
             download_and_upload_document(full_document_url, folder_name, document_name)
+            results["documents"].append({"name": document_name, "url": full_document_url})
     except Exception as e:
         print(f"Error while scraping {url}: {e}")
 
+    return results
+
+def main():
+    # List of URLs to scrape
+    urls = [
+        "https://ripuc.ri.gov/eventsactions/docket/4770-Year1.html",
+        # Add more URLs here
+    ]
+
+    for url in urls:
+        print(f"Processing URL: {url}")
+        result = scrape_documents(url)
+        print(f"Finished processing {url}. Documents: {result['documents']}")
+
 if __name__ == "__main__":
-    # URL to scrape
-    url = "https://ripuc.ri.gov/eventsactions/docket/4770-Year1.html"
-    
-    # Call the scrape_documents function
-    scrape_documents(url)
+    main()
