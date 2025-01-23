@@ -1,0 +1,32 @@
+name: DocumentIndexingWorkflow
+description: A workflow to index documents using Azure Blob, OpenAI, and Cognitive Search.
+inputs:
+  - name: container_name
+    type: string
+  - name: connection_string
+    type: string
+  - name: download_path
+    type: string
+  - name: openai_key
+    type: string
+  - name: openai_endpoint
+    type: string
+  - name: search_endpoint
+    type: string
+  - name: search_key
+    type: string
+  - name: search_index_name
+    type: string
+steps:
+  - name: index_documents
+    type: python
+    script: app.py
+    inputs:
+      container_name: "{{ container_name }}"
+      connection_string: "{{ connection_string }}"
+      download_path: "{{ download_path }}"
+      openai_key: "{{ openai_key }}"
+      openai_endpoint: "{{ openai_endpoint }}"
+      search_endpoint: "{{ search_endpoint }}"
+      search_key: "{{ search_key }}"
+      search_index_name: "{{ search_index_name }}"
