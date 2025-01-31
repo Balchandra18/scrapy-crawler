@@ -1,0 +1,44 @@
+fields = [
+    SimpleField(name="id", type=SearchFieldDataType.String, 
+                key=True, sortable=True, 
+                filterable=True, facetable=True),
+    SearchableField(name="line", type=SearchFieldDataType.String),
+    SearchableField(name="filename", type=SearchFieldDataType.String,
+                    filterable=True, facetable=True),
+    SearchField(name="embedding", type=SearchFieldDataType.Collection(SearchFieldDataType.Single),
+                searchable=True, vector_search_dimensions=384, 
+                vector_search_profile_name="myHnswProfile")
+]
+
+# Configure the vector search configuration  
+vector_search = VectorSearch(
+    algorithms=[
+        HnswAlgorithmConfiguration(
+            name="myHnsw",
+            kind=VectorSearchAlgorithmKind.HNSW,
+            parameters=HnswParameters(
+                m=4,
+                ef_construction=400,
+                ef_search=500,
+                metric=VectorSearchAlgorithmMetric.COSINE
+            )
+        ),
+        ExhaustiveKnnAlgorithmConfiguration(
+            name="myExhaustiveKnn",
+            kind=VectorSearchAlgorithmKind.EXHAUSTIVE_KNN,
+            parameters=ExhaustiveKnnParameters(
+                metric=VectorSearchAlgorithmMetric.COSINE
+            )
+        )
+    ],
+    profiles=[
+        VectorSearchProfile(
+            name="myHnswProfile",
+            algorithm_configuration_name="myHnsw",
+        ),
+        VectorSearchProfile(
+            name="myExhaustiveKnnProfile",
+            algorithm_configuration_name="myExhaustiveKnn",
+        )
+    ]
+)
