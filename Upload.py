@@ -1,3 +1,15 @@
+# Delete the destination container if it exists
+    try:
+        blob_service_client.delete_container(DEST_CONTAINER_NAME)
+    except Exception as e:
+        print(f"Container {DEST_CONTAINER_NAME} does not exist or could not be deleted: {e}")
+    
+    # Recreate the destination container
+    dest_container.create_container()
+
+
+
+
 from PyPDF2 import PdfReader
 from sentence_transformers import SentenceTransformer
 from azure.storage.blob import BlobServiceClient
