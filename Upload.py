@@ -1,12 +1,13 @@
-# Delete the destination container if it exists
-    try:
-        blob_service_client.delete_container(DEST_CONTAINER_NAME)
-    except Exception as e:
-        print(f"Container {DEST_CONTAINER_NAME} does not exist or could not be deleted: {e}")
-    
-    # Recreate the destination container
-    dest_container.create_container()
-
+# Ensure destination container exists, or create it
+try:
+    if not dest_container.exists():
+        dest_container.create_container()
+    else:
+        print(f"Container '{DEST_CONTAINER_NAME}' already exists. Overwriting existing blobs...")
+        for blob in dest_container.list_blobs():
+            dest_container.get_blob_client(blob).delete_blob()
+except Exception as e:
+    print(f"Error handling destination container: {e}")
 
 
 
